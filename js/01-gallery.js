@@ -6,7 +6,6 @@ const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 galleryContainer.insertAdjacentHTML('beforeend', itemsMarkup);
 galleryContainer.addEventListener('click', onImgClickCreateModal);
 
-
 function createGalleryItemsMarkup(items) {
   return items.map(({ preview, original, description }) => {
     return `<div class="gallery__item">
@@ -25,12 +24,14 @@ function createGalleryItemsMarkup(items) {
 
 function onImgClickCreateModal(e) {
   e.preventDefault();
-  if (e.target.nodeName !== "IMG") {return;}
+  if (e.target.nodeName !== "IMG") 
+{return;}
 
   const isItemImage = e.target.classList.contains("gallery__image");
   if (!isItemImage) {
     return;
   }
+  
 
   const currentImgUrl = e.target.dataset.source;
 
@@ -39,10 +40,10 @@ function onImgClickCreateModal(e) {
 		<img src="${currentImgUrl}" width="340" height="auto"/>
         `,
     {
-      onShow: (instance) => {
+      onShow: () => {
         window.addEventListener("keydown", onEscKeyPress);
       },
-      onClose: (instance) => {
+      onClose: () => {
         window.removeEventListener("keydown", onEscKeyPress);
       },
     }
