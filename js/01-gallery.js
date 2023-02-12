@@ -1,14 +1,16 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-const galleryContainer = document.querySelector('.gallery');
-const itemsMarkup = createGalleryItemsMarkup(galleryItems);
-galleryContainer.insertAdjacentHTML('beforeend', itemsMarkup);
-galleryContainer.addEventListener('click', onImgClickCreateModal);
+const galleryContainer = document.querySelector(".gallery");
+const itemsEl = createGalleryItems(galleryItems);
 
-function createGalleryItemsMarkup(items) {
-  return items.map(({ preview, original, description }) => {
-    return `<div class="gallery__item">
+galleryContainer.insertAdjacentHTML("beforeend", itemsEl);
+galleryContainer.addEventListener("click", onImgClickCreateModal);
+
+function createGalleryItems(gallery) {
+  return gallery
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
   <a class="gallery__link" href="${original}">
     <img
       class="gallery__image"
@@ -17,47 +19,29 @@ function createGalleryItemsMarkup(items) {
       alt="${description}"
     />
   </a>
-</div>`
-  }).join('');
+</div>`;
+    })
+    .join("");
 }
 
-
-function onImgClickCreateModal(e) {
-  e.preventDefault();
-  if (e.target.nodeName !== "IMG") 
-{return;}
-
-  const isItemImage = e.target.classList.contains("gallery__image");
-  if (!isItemImage) {
+function onImgClickCreateModal(evn) {
+  evn.preventDefault();
+  if (!evn.target.classList.contains("gallery__image")) {
     return;
   }
-  
 
-  const currentImgUrl = e.target.dataset.source;
-
-  const instance = basicLightbox.create(
-    `
-		<img src="${currentImgUrl}" width="340" height="auto"/>
-        `,
+    const instance = basicLightbox.create(
+    `<img src="${evn.target.dataset.source}" width="340" height="auto"/>`,
     {
-      onShow: () => {
-        window.addEventListener("keydown", onEscKeyPress);
-      },
-      onClose: () => {
-        window.removeEventListener("keydown", onEscKeyPress);
-      },
+      onShow: () => document.addEventListener("keydown", onCloseModal),
+      onClose: () => document.removeEventListener("keydown", onCloseModal),
     }
   );
   instance.show();
 
-  function onEscKeyPress(e) {
-    const ESC_KEY_CODE = 'Escape';
-    const isEscKey = e.code === ESC_KEY_CODE;
-    if (isEscKey) {
+   function onCloseModal(evn) {
+    if (evn.code === "Escape") {
       instance.close();
     }
   }
 }
-
-
-console.log(galleryItems);
