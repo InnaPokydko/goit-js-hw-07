@@ -31,7 +31,7 @@ function onImgClickCreateModal(evn) {
   }
 
     const instance = basicLightbox.create(
-    `<img src="${evn.target.dataset.source}" width="340" height="auto"/>`,
+    `<img src="${evn.target.dataset.source}" width="340" height="480"/>`,
     {
       onShow: () => document.addEventListener("keydown", onCloseModal),
       onClose: () => document.removeEventListener("keydown", onCloseModal),
